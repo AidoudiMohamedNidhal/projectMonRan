@@ -1,0 +1,17 @@
+{
+  "name": "lightweight-frontend",
+  "version": "1.0.0",
+  "description": "Simple lightweight frontend",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "keywords": ["frontend", "simple", "html"],
+  "author": "",
+  "license": "MIT"
+}

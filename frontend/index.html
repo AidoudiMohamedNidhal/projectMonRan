@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links button {
+            background: none;
+            border: 2px solid transparent;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links button:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-links button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .cart-badge {
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+
+        main {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            padding: 30px;
+            min-height: 400px;
+        }
+
+        .page {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
+        }
+
+        .btn-success {
+            background: #51cf66;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .product-card h3 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .product-card p {
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .product-card .price {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 24px;
+            margin: 15px 0;
+        }
+
+        .product-card .category {
+            background: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .cart-items {
+            margin: 20px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-control input {
+            width: 60px;
+            text-align: center;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .admin-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .admin-section h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .product-actions button {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            nav {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .cart-item-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <div class="logo">Modern Shop</div>
+                <div class="nav-links">
+                    <button onclick="showPage('home')" id="homeBtn">Home</button>
+                    <button onclick="showPage('products')" id="productsBtn">Products</button>
+                    <button onclick="showPage('cart')" id="cartBtn" class="hidden">
+                        Cart <span class="cart-badge" id="cartCount">0</span>
+                    </button>
+                    <button onclick="showPage('orders')" id="ordersBtn" class="hidden">Orders</button>
+                    <button onclick="showPage('admin')" id="adminBtn" class="hidden">Admin</button>
+                    <button onclick="showPage('auth')" id="authBtn">Login</button>
+                    <button onclick="showPage('profile')" id="profileBtn" class="hidden">Profile</button>
+                    <button onclick="logout()" id="logoutBtn" class="hidden">Logout</button>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div id="messageContainer"></div>
+
+            <!-- Home Page -->
+            <div id="homePage" class="page">
+                <h2>Welcome to Modern Shop</h2>
+                <p style="margin: 20px 0; font-size: 18px; color: #666;">
+                    Discover amazing products with our simple and modern shopping experience.
+                </p>
+                <p>Please login or register to start shopping.</p>
+                <button class="btn" onclick="showPage('products')" style="margin-top: 20px;">Browse Products</button>
+            </div>
+
+            <!-- Auth Page -->
+            <div id="authPage" class="page hidden">
+                <h2 id="authTitle">Login</h2>
+                
+                <div id="loginForm">
+                    <form onsubmit="login(event)">
+                        <div class="form-group">
+                            <label for="loginEmail">Email:</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password:</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn">Login</button>
+                    </form>
+                    <p style="margin-top: 20px;">
+                        Don't have an account? 
+                        <button type="button" onclick="toggleAuthForm()" style="background: none; color: #667eea; padding: 0; text-decoration: underline; font-weight: 600;">Register</button>
+                    </p>
+                </div>
+
+                <div id="registerForm" class="hidden">
+                    <form onsubmit="register(event)">
+                        <div class="form-group">
+                            <label for="registerEmail">Email:</label>
+                            <input type="email" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerFirstName">First Name:</label>
+                            <input type="text" id="registerFirstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="registerLastName">Last Name:</label>
+                            <input type="text" id="registerLastName">
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Password:</label>
+                            <input type="password" id="registerPassword" required>
+                        </div>
+                        <button type="submit" class="btn">Register</button>
+                    </form>
+                    <p style="margin-top: 20px;">
+                        Already have an account? 
+                        <button type="button" onclick="toggleAuthForm()" style="background: none; color: #667eea; padding: 0; text-decoration: underline; font-weight: 600;">Login</button>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profilePage" class="page hidden">
+                <h2>My Profile</h2>
+                <div id="profileContent"></div>
+            </div>
+
+            <!-- Products Page -->
+            <div id="productsPage" class="page hidden">
+                <h2>Products</h2>
+                <div id="productsList" class="product-grid"></div>
+            </div>
+
+            <!-- Cart Page -->
+            <div id="cartPage" class="page hidden">
+                <h2>Shopping Cart</h2>
+                <div id="cartContent"></div>
+            </div>
+
+            <!-- Orders Page -->
+            <div id="ordersPage" class="page hidden">
+                <h2>My Orders</h2>
+                <div id="ordersContent"></div>
+            </div>
+
+            <!-- Admin Page -->
+            <div id="adminPage" class="page hidden">
+                <div class="admin-section">
+                    <h3>Admin Dashboard</h3>
+                    <p>Manage products, view orders, and control your shop.</p>
+                </div>
+                
+                <h3>Product Management</h3>
+                <div id="adminProductForm">
+                    <h4 id="formTitle">Add New Product</h4>
+                    <form onsubmit="adminAddProduct(event)">
+                        <div class="form-group">
+                            <label for="adminProductName">Name:</label>
+                            <input type="text" id="adminProductName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminProductDescription">Description:</label>
+                            <textarea id="adminProductDescription" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminProductPrice">Price:</label>
+                            <input type="number" id="adminProductPrice" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminProductCategory">Category:</label>
+                            <input type="text" id="adminProductCategory">
+                        </div>
+                        <button type="submit" class="btn" id="submitBtn">Add Product</button>
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit()" id="cancelBtn" class="hidden">Cancel</button>
+                    </form>
+                    <hr style="margin: 30px 0;">
+                </div>
+
+                <div id="adminProductsList" class="product-grid"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
